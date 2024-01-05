@@ -72,6 +72,13 @@ func generateMonthlyReports(year string) {
 }
 
 func main() {
+	// TODO:
+	// 1. add flags for:
+	//      output-dir
+	//      hledger journal file
+	//      fileserver dir (reuse output dir?)
+	//      date-range
+	// 2. create and use hledger-cli tool (from puffin)
 	var generateReports bool
 	flag.BoolVar(&generateReports, "generate", false, "generate reports")
 	flag.Parse()
