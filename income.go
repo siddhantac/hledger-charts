@@ -12,7 +12,7 @@ import (
 )
 
 func incomeStatementBarChartMonthly(date string) *charts.Bar {
-	incomeStmt, err := exec.Command("hledger", "incomestatement", "-M", "--depth", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+	incomeStmt, err := exec.Command("hledger", "incomestatement", "-M", "--depth", "2", "-p", date, "--layout", "bare", "-O", "csv").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
