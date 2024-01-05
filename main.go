@@ -33,6 +33,10 @@ func main() {
 	flag.StringVar(&outputDir, "output", "", "output directory")
 	flag.Parse()
 
+	if outputDir == "" {
+		log.Fatal("output directory must be specified")
+	}
+
 	if generateReports {
 		c := NewCharts(outputDir)
 		c.createYearlyReport("2023")
