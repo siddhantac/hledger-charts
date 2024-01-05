@@ -19,26 +19,6 @@ func defaultTheme() opts.Initialization {
 	}
 }
 
-func createYearlyReport(date string) {
-	page := components.NewPage()
-	page.Layout = components.PageCenterLayout
-	page.AddCharts(
-		incomeStatementBarChartMonthly(date),
-		expensesPieChart(date),
-		expensesHorizontalBarChart(date),
-		investmentsPieChart(date),
-	)
-	page.PageTitle = "Yearly Report 2023"
-
-	filename := fmt.Sprintf("reports/%s.html", date)
-	f, err := os.Create(filename)
-	if err != nil {
-		panic(err)
-	}
-	page.Render(f)
-	log.Println("generated:", filename)
-}
-
 func createMonthlyReport(date string) {
 	page := components.NewPage()
 	page.Layout = components.PageCenterLayout
@@ -82,9 +62,10 @@ func main() {
 	flag.Parse()
 
 	if generateReports {
-		createYearlyReport("2023")
-		createMonthlyReport("last month")
-		generateMonthlyReports("2023")
+		c := NewCharts(outputDir)
+		c.createYearlyReport("2023")
+		// createMonthlyReport("last month")
+		// generateMonthlyReports("2023")
 	}
 
 	fs := http.FileServer(http.Dir(outputDir))
