@@ -29,8 +29,8 @@ func main() {
 		outputDir       string
 	)
 
-	flag.BoolVar(&generateReports, "generate", false, "generate reports")
-	flag.StringVar(&outputDir, "output", "", "output directory")
+	flag.BoolVar(&generateReports, "gen", false, "generate reports")
+	flag.StringVar(&outputDir, "out", "", "output directory")
 	flag.Parse()
 
 	if outputDir == "" {
