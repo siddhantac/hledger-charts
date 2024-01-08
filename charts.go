@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/go-echarts/go-echarts/v2/components"
 )
@@ -14,14 +15,19 @@ type Charts struct {
 }
 
 func NewCharts(outputDir string, year int) Charts {
+	dir := filepath.Join(outputDir, fmt.Sprintf("%d", year))
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+		log.Fatal(err)
+	}
 	return Charts{
-		OutputDir: outputDir,
+		OutputDir: dir,
 		Year:      year,
 	}
 }
 
 func (c Charts) createYearlyReport() {
 	date := fmt.Sprintf("%d", c.Year)
+
 	page := components.NewPage()
 	page.Layout = components.PageCenterLayout
 	page.AddCharts(
