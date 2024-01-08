@@ -10,13 +10,18 @@ import (
 
 type Charts struct {
 	OutputDir string
+	Year      int
 }
 
-func NewCharts(outputDir string) Charts {
-	return Charts{OutputDir: outputDir}
+func NewCharts(outputDir string, year int) Charts {
+	return Charts{
+		OutputDir: outputDir,
+		Year:      year,
+	}
 }
 
-func (c Charts) createYearlyReport(date string) {
+func (c Charts) createYearlyReport() {
+	date := fmt.Sprintf("%d", c.Year)
 	page := components.NewPage()
 	page.Layout = components.PageCenterLayout
 	page.AddCharts(

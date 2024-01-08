@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/go-echarts/go-echarts/v2/types"
@@ -27,10 +28,12 @@ func main() {
 	var (
 		generateReports bool
 		outputDir       string
+		year            int
 	)
 
 	flag.BoolVar(&generateReports, "gen", false, "generate reports")
 	flag.StringVar(&outputDir, "out", "", "output directory")
+	flag.IntVar(&year, "year", time.Now().Year(), "year")
 	flag.Parse()
 
 	if outputDir == "" {
@@ -38,8 +41,8 @@ func main() {
 	}
 
 	if generateReports {
-		c := NewCharts(outputDir)
-		c.createYearlyReport("2023")
+		c := NewCharts(outputDir, year)
+		c.createYearlyReport()
 		c.createMonthlyReport("last month")
 		c.generateMonthlyReports("2023")
 	}
