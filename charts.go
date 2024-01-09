@@ -66,8 +66,19 @@ func (c Charts) createMonthlyReport(date string) {
 }
 
 func (c Charts) generateMonthlyReports(year string) {
+	workCh := make(chan string, 12)
 	for i := 1; i <= 12; i++ {
 		month := fmt.Sprintf("%s-%0.2d", year, i)
-		c.createMonthlyReport(month)
+		workCh <- month
+	}
+	close(workCh)
+
+	numWorkers := 3
+	for i := 0; i < numWorkers; i++ {
+		go func() {
+			for month := range workCh {
+				c.createMonthlyReport(month)
+			}
+		}()
 	}
 }
