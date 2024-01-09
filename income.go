@@ -12,6 +12,39 @@ import (
 	"github.com/go-echarts/go-echarts/v2/types"
 )
 
+func incomeFromInvestmentsPieChart(date string) *charts.Pie {
+	out, err := exec.Command("hledger", "bal", "income:investment", "--invert", "--drop", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	data := string(out)
+	pie := charts.NewPie()
+	pie.SetGlobalOptions(
+		charts.WithTitleOpts(opts.Title{
+			Title: "Income from investments  " + date,
+		}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
+		charts.WithInitializationOpts(
+			opts.Initialization{
+				Theme:           types.ThemeRoma,
+				BackgroundColor: "white",
+			}),
+		charts.WithLegendOpts(opts.Legend{Show: false}),
+	)
+
+	pie.AddSeries("pie", parseCSV1a(data)).
+		SetSeriesOptions(
+			charts.WithLabelOpts(opts.Label{
+				Show:      true,
+				Formatter: "{b}: {c}",
+			}),
+			charts.WithPieChartOpts(opts.PieChart{
+				Radius: []string{"40%", "75%"},
+			}),
+		)
+	return pie
+}
+
 func incomePieChart(date string) *charts.Pie {
 	out, err := exec.Command("hledger", "bal", "income", "--invert", "--drop", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
 	if err != nil {
