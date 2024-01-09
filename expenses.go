@@ -13,7 +13,7 @@ import (
 )
 
 func expensesPieChart(date string) *charts.Pie {
-	out, err := exec.Command("hledger", "bal", "expenses", "--drop", "1", "--depth", "2", "-p", date, "-O", "csv").Output()
+	out, err := exec.Command("hledger", "bal", "expenses", "--drop", "1", "--depth", "2", "-p", date, "--layout", "bare", "-O", "csv").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -90,8 +90,7 @@ func parseCSV1a(data string) []opts.PieData {
 
 	for _, record := range records[1 : len(records)-1] {
 		name := record[0]
-		num := strings.Replace(record[1], "SGD$", "", 1)
-		num = strings.Replace(num, ",", "", 1)
+		num := record[2]
 		amt, err := strconv.ParseFloat(num, 64)
 		if err != nil {
 			amt = 0

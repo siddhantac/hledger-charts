@@ -10,7 +10,7 @@ import (
 )
 
 func investmentsPieChart(date string) *charts.Pie {
-	out, err := exec.Command("hledger", "bal", "assets:invest", "--drop", "2", "-p", date, "-O", "csv").Output()
+	out, err := exec.Command("hledger", "bal", "assets:invest", "--drop", "2", "-p", date, "--layout", "bare", "-O", "csv").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
