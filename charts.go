@@ -35,6 +35,7 @@ func (c Charts) createYearlyReport() {
 		expensesPieChart(date),
 		expensesHorizontalBarChart(date),
 		investmentsPieChart(date),
+		incomePieChart(date),
 	)
 	page.PageTitle = "Yearly Report 2023"
 
