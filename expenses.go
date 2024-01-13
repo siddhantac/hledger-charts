@@ -1,19 +1,34 @@
 package main
 
 import (
+	"io"
 	"log"
 	"os/exec"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/go-echarts/go-echarts/v2/types"
+	"github.com/siddhantac/hledger"
 )
 
 func expensesPieChart(date string) *charts.Pie {
-	out, err := exec.Command("hledger", "bal", "expenses", "--drop", "1", "--depth", "2", "-p", date, "--layout", "bare", "-O", "csv").Output()
+	hl := hledger.New("hledger", "")
+	hlopts := hledger.NewOptions().
+		WithAccount("expenses").
+		WithAccountDrop(1).
+		WithAccountDepth(2).
+		WithStartDate(date).
+		WithLayout(hledger.LayoutBare).
+		WithOutputCSV()
+
+		// out, err := exec.Command("hledger", "bal", "expenses", "--drop", "1", "--depth", "2", "-p", date, "--layout", "bare", "-O", "csv").Output()
+	rd, err := hl.Balance(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	out, _ := io.ReadAll(rd)
+
 	data := string(out)
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
