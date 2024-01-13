@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"io"
 	"log"
 	"os/exec"
 	"strconv"
@@ -12,11 +13,18 @@ import (
 	"github.com/go-echarts/go-echarts/v2/types"
 )
 
-func incomeFromInvestmentsPieChart(date string) *charts.Pie {
-	out, err := exec.Command("hledger", "bal", "income:investment", "--invert", "--drop", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+func (c Charts) incomeFromInvestmentsPieChart(date string) *charts.Pie {
+	hlopts := c.hlopts.
+		WithAccount("income:investment").
+		WithAccountDrop(1).
+		WithStartDate(date).
+		WithInvertAmount()
+
+	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
+	out, _ := io.ReadAll(rd)
 	data := string(out)
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
