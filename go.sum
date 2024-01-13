@@ -6,6 +6,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/siddhantac/hledger v0.0.0-20240111100303-7a729dcadd95 h1:2AJaX8fQ2OxelO/E3g9XSb2kbvQRT4u2PC3z5cJXJmI=
 github.com/siddhantac/hledger v0.0.0-20240111100303-7a729dcadd95/go.mod h1:87p4LqIKToEa5YxjVLnJZr/AUZp/Q+ScGSS3Dvx9zAg=
+github.com/siddhantac/hledger v0.0.0-20240113121345-b3d128304d4d h1:xeyHLvkJfFPjynU4AzXi2njXEMHfSyaFcrqI8jpfX8o=
+github.com/siddhantac/hledger v0.0.0-20240113121345-b3d128304d4d/go.mod h1:87p4LqIKToEa5YxjVLnJZr/AUZp/Q+ScGSS3Dvx9zAg=
 github.com/stretchr/testify v1.6.0 h1:jlIyCplCJFULU/01vCkhKuTyc3OorI3bJFuw6obfgho=
 github.com/stretchr/testify v1.6.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 gopkg.in/yaml.v3 v3.0.0 h1:hjy8E9ON/egN1tAYqKb61G10WtihqetD4sz2H+8nIeA=

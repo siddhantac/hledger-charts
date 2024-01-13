@@ -47,9 +47,8 @@ func parseCSV1(data string) ([]string, []opts.BarData) {
 	var ydata []opts.BarData
 
 	for _, record := range records[1 : len(records)-1] {
-		xdata = append(xdata, strings.Replace(record[0], "expenses:", "", 1))
-
-		num := strings.Replace(record[1], "SGD$", "", 1)
+		xdata = append(xdata, record[0])
+		num := record[2]
 		num = strings.Replace(num, ",", "", 1)
 		amt, err := strconv.ParseFloat(num, 64)
 		if err != nil {
