@@ -7,11 +7,14 @@ import (
 	"path/filepath"
 
 	"github.com/go-echarts/go-echarts/v2/components"
+	"github.com/siddhantac/hledger"
 )
 
 type Charts struct {
 	OutputDir string
 	Year      int
+	hl        hledger.Hledger
+	hlopts    hledger.Options
 }
 
 func NewCharts(outputDir string, year int) Charts {
@@ -19,9 +22,16 @@ func NewCharts(outputDir string, year int) Charts {
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
+
+	hlopts := hledger.NewOptions().
+		WithLayout(hledger.LayoutBare).
+		WithOutputCSV()
+
 	return Charts{
 		OutputDir: dir,
 		Year:      year,
+		hl:        hledger.New("hledger", ""),
+		hlopts:    hlopts,
 	}
 }
 
@@ -32,7 +42,7 @@ func (c Charts) createYearlyReport() {
 	page.Layout = components.PageCenterLayout
 	page.AddCharts(
 		incomeStatementBarChartMonthly(date),
-		expensesPieChart(date),
+		c.expensesPieChart(date),
 		expensesHorizontalBarChart(date),
 		investmentsPieChart(date),
 		incomePieChart(date),
@@ -53,7 +63,7 @@ func (c Charts) createMonthlyReport(date string) {
 	page := components.NewPage()
 	page.Layout = components.PageCenterLayout
 	page.AddCharts(
-		expensesPieChart(date),
+		c.expensesPieChart(date),
 		expensesHorizontalBarChart(date),
 		investmentsPieChart(date),
 	)

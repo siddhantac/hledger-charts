@@ -8,21 +8,16 @@ import (
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/go-echarts/go-echarts/v2/types"
-	"github.com/siddhantac/hledger"
 )
 
-func expensesPieChart(date string) *charts.Pie {
-	hl := hledger.New("hledger", "")
-	hlopts := hledger.NewOptions().
+func (c Charts) expensesPieChart(date string) *charts.Pie {
+	hlopts := c.hlopts.
 		WithAccount("expenses").
 		WithAccountDrop(1).
 		WithAccountDepth(2).
-		WithStartDate(date).
-		WithLayout(hledger.LayoutBare).
-		WithOutputCSV()
+		WithStartDate(date)
 
-		// out, err := exec.Command("hledger", "bal", "expenses", "--drop", "1", "--depth", "2", "-p", date, "--layout", "bare", "-O", "csv").Output()
-	rd, err := hl.Balance(hlopts)
+	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
