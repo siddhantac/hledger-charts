@@ -7,11 +7,14 @@ import (
 	"path/filepath"
 
 	"github.com/go-echarts/go-echarts/v2/components"
+	"github.com/siddhantac/hledger"
 )
 
 type Charts struct {
 	OutputDir string
 	Year      int
+	hl        hledger.Hledger
+	hlopts    hledger.Options
 }
 
 func NewCharts(outputDir string, year int) Charts {
@@ -19,9 +22,16 @@ func NewCharts(outputDir string, year int) Charts {
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
+
+	hlopts := hledger.NewOptions().
+		WithLayout(hledger.LayoutBare).
+		WithOutputCSV()
+
 	return Charts{
 		OutputDir: dir,
 		Year:      year,
+		hl:        hledger.New("hledger", ""),
+		hlopts:    hlopts,
 	}
 }
 
@@ -31,12 +41,12 @@ func (c Charts) createYearlyReport() {
 	page := components.NewPage()
 	page.Layout = components.PageCenterLayout
 	page.AddCharts(
-		incomeStatementBarChartMonthly(date),
-		expensesPieChart(date),
-		expensesHorizontalBarChart(date),
-		investmentsPieChart(date),
-		incomePieChart(date),
-		incomeFromInvestmentsPieChart(date),
+		c.incomeStatementBarChartMonthly(date),
+		c.expensesPieChart(date),
+		c.expensesHorizontalBarChart(date),
+		c.investmentsPieChart(date),
+		c.incomePieChart(date),
+		c.incomeFromInvestmentsPieChart(date),
 	)
 	page.PageTitle = "Yearly Report 2023"
 
@@ -53,9 +63,9 @@ func (c Charts) createMonthlyReport(date string) {
 	page := components.NewPage()
 	page.Layout = components.PageCenterLayout
 	page.AddCharts(
-		expensesPieChart(date),
-		expensesHorizontalBarChart(date),
-		investmentsPieChart(date),
+		c.expensesPieChart(date),
+		c.expensesHorizontalBarChart(date),
+		c.investmentsPieChart(date),
 	)
 
 	filename := fmt.Sprintf("%s/%s.html", c.OutputDir, date)

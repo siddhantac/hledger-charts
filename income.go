@@ -2,21 +2,29 @@ package main
 
 import (
 	"encoding/csv"
+	"io"
 	"log"
-	"os/exec"
 	"strconv"
 	"strings"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/go-echarts/go-echarts/v2/types"
+	"github.com/siddhantac/hledger"
 )
 
-func incomeFromInvestmentsPieChart(date string) *charts.Pie {
-	out, err := exec.Command("hledger", "bal", "income:investment", "--invert", "--drop", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+func (c Charts) incomeFromInvestmentsPieChart(date string) *charts.Pie {
+	hlopts := c.hlopts.
+		WithAccount("income:investment").
+		WithAccountDrop(1).
+		WithStartDate(date).
+		WithInvertAmount()
+
+	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
+	out, _ := io.ReadAll(rd)
 	data := string(out)
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
@@ -45,12 +53,20 @@ func incomeFromInvestmentsPieChart(date string) *charts.Pie {
 	return pie
 }
 
-func incomePieChart(date string) *charts.Pie {
-	out, err := exec.Command("hledger", "bal", "income", "--invert", "--drop", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+func (c Charts) incomePieChart(date string) *charts.Pie {
+	hlopts := c.hlopts.
+		WithAccount("income").
+		WithAccountDrop(1).
+		WithStartDate(date).
+		WithInvertAmount()
+
+	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
+	out, _ := io.ReadAll(rd)
 	data := string(out)
+
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
@@ -78,12 +94,23 @@ func incomePieChart(date string) *charts.Pie {
 	return pie
 }
 
-func incomeStatementBarChartMonthly(date string) *charts.Bar {
-	incomeStmt, err := exec.Command("hledger", "incomestatement", "-M", "--depth", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+func (c Charts) incomeStatementBarChartMonthly(date string) *charts.Bar {
+	hlopts := c.hlopts.
+		WithAccountDepth(1).
+		WithStartDate(date).
+		WithPeriod(hledger.PeriodMonthly)
+
+	rd, err := c.hl.IncomeStatement(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
-	xdata, ydata := parseCSVIncomeStatement(string(incomeStmt))
+	out, _ := io.ReadAll(rd)
+
+	// out, err := exec.Command("hledger", "incomestatement", "-M", "--depth", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	xdata, ydata := parseCSVIncomeStatement(string(out))
 
 	bar := charts.NewBar()
 	bar.SetGlobalOptions(

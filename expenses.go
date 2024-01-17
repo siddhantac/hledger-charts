@@ -1,19 +1,28 @@
 package main
 
 import (
+	"io"
 	"log"
-	"os/exec"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/go-echarts/go-echarts/v2/types"
 )
 
-func expensesPieChart(date string) *charts.Pie {
-	out, err := exec.Command("hledger", "bal", "expenses", "--drop", "1", "--depth", "2", "-p", date, "--layout", "bare", "-O", "csv").Output()
+func (c Charts) expensesPieChart(date string) *charts.Pie {
+	hlopts := c.hlopts.
+		WithAccount("expenses").
+		WithAccountDrop(1).
+		WithAccountDepth(2).
+		WithStartDate(date)
+
+	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	out, _ := io.ReadAll(rd)
+
 	data := string(out)
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
@@ -42,11 +51,21 @@ func expensesPieChart(date string) *charts.Pie {
 	return pie
 }
 
-func expensesHorizontalBarChart(date string) *charts.Bar {
-	out, err := exec.Command("hledger", "bal", "expenses", "--depth", "2", "-S", "-p", date, "-O", "csv").Output()
+func (c Charts) expensesHorizontalBarChart(date string) *charts.Bar {
+	hlopts := c.hlopts.
+		WithAccount("expenses").
+		WithAccountDrop(1).
+		WithAccountDepth(2).
+		WithSortAmount().
+		WithStartDate(date)
+		// TODO: add -S
+
+	rd, err := c.hl.Balance(hlopts)
+	// out, err := exec.Command("hledger", "bal", "expenses", "--depth", "2", "-S", "-p", date, "-O", "csv").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
+	out, _ := io.ReadAll(rd)
 	data := string(out)
 	bar := charts.NewBar()
 	bar.SetGlobalOptions(
