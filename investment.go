@@ -1,20 +1,27 @@
 package main
 
 import (
+	"io"
 	"log"
-	"os/exec"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/go-echarts/go-echarts/v2/types"
 )
 
-func investmentsPieChart(date string) *charts.Pie {
-	out, err := exec.Command("hledger", "bal", "assets:invest", "--drop", "2", "-p", date, "--layout", "bare", "-O", "csv").Output()
+func (c Charts) investmentsPieChart(date string) *charts.Pie {
+	hlopts := c.hlopts.
+		WithAccount("assets:invest").
+		WithAccountDrop(2).
+		WithStartDate(date)
+
+	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
+	out, _ := io.ReadAll(rd)
 	data := string(out)
+
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{

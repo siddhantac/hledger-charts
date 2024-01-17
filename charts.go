@@ -44,7 +44,7 @@ func (c Charts) createYearlyReport() {
 		incomeStatementBarChartMonthly(date),
 		c.expensesPieChart(date),
 		c.expensesHorizontalBarChart(date),
-		investmentsPieChart(date),
+		c.investmentsPieChart(date),
 		c.incomePieChart(date),
 		c.incomeFromInvestmentsPieChart(date),
 	)
@@ -65,7 +65,7 @@ func (c Charts) createMonthlyReport(date string) {
 	page.AddCharts(
 		c.expensesPieChart(date),
 		c.expensesHorizontalBarChart(date),
-		investmentsPieChart(date),
+		c.investmentsPieChart(date),
 	)
 
 	filename := fmt.Sprintf("%s/%s.html", c.OutputDir, date)
