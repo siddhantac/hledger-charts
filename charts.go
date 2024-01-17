@@ -41,7 +41,7 @@ func (c Charts) createYearlyReport() {
 	page := components.NewPage()
 	page.Layout = components.PageCenterLayout
 	page.AddCharts(
-		incomeStatementBarChartMonthly(date),
+		c.incomeStatementBarChartMonthly(date),
 		c.expensesPieChart(date),
 		c.expensesHorizontalBarChart(date),
 		c.investmentsPieChart(date),

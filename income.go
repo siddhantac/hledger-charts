@@ -4,13 +4,13 @@ import (
 	"encoding/csv"
 	"io"
 	"log"
-	"os/exec"
 	"strconv"
 	"strings"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/go-echarts/go-echarts/v2/types"
+	"github.com/siddhantac/hledger"
 )
 
 func (c Charts) incomeFromInvestmentsPieChart(date string) *charts.Pie {
@@ -94,12 +94,23 @@ func (c Charts) incomePieChart(date string) *charts.Pie {
 	return pie
 }
 
-func incomeStatementBarChartMonthly(date string) *charts.Bar {
-	incomeStmt, err := exec.Command("hledger", "incomestatement", "-M", "--depth", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+func (c Charts) incomeStatementBarChartMonthly(date string) *charts.Bar {
+	hlopts := c.hlopts.
+		WithAccountDepth(1).
+		WithStartDate(date).
+		WithPeriod(hledger.PeriodMonthly)
+
+	rd, err := c.hl.IncomeStatement(hlopts)
 	if err != nil {
 		log.Fatal(err)
 	}
-	xdata, ydata := parseCSVIncomeStatement(string(incomeStmt))
+	out, _ := io.ReadAll(rd)
+
+	// out, err := exec.Command("hledger", "incomestatement", "-M", "--depth", "1", "-p", date, "--layout", "bare", "-O", "csv").Output()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	xdata, ydata := parseCSVIncomeStatement(string(out))
 
 	bar := charts.NewBar()
 	bar.SetGlobalOptions(
