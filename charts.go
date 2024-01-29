@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync"
 
 	"github.com/go-echarts/go-echarts/v2/components"
 	"github.com/siddhantac/hledger"
@@ -78,6 +79,7 @@ func (c Charts) createMonthlyReport(date string) {
 }
 
 func (c Charts) generateMonthlyReports(year int) {
+	var wg sync.WaitGroup
 	workCh := make(chan string, 12)
 	for i := 1; i <= 12; i++ {
 		month := fmt.Sprintf("%d-%0.2d", year, i)
@@ -86,11 +88,14 @@ func (c Charts) generateMonthlyReports(year int) {
 	close(workCh)
 
 	numWorkers := 3
+	wg.Add(numWorkers)
 	for i := 0; i < numWorkers; i++ {
-		go func() {
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
 			for month := range workCh {
 				c.createMonthlyReport(month)
 			}
-		}()
+		}(&wg)
 	}
+	wg.Wait()
 }
