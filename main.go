@@ -29,11 +29,13 @@ func main() {
 		generateReports bool
 		outputDir       string
 		year            int
+		server          bool
 	)
 
 	flag.BoolVar(&generateReports, "gen", false, "generate reports")
 	flag.StringVar(&outputDir, "out", "", "output directory")
 	flag.IntVar(&year, "year", time.Now().Year(), "year")
+	flag.BoolVar(&server, "server", false, "start file server")
 	flag.Parse()
 
 	if outputDir == "" {
@@ -47,7 +49,9 @@ func main() {
 		c.generateMonthlyReports(year)
 	}
 
-	fs := http.FileServer(http.Dir(outputDir))
-	log.Println("running server at http://localhost:8081")
-	log.Fatal(http.ListenAndServe("localhost:8081", logRequest(fs)))
+	if server {
+		fs := http.FileServer(http.Dir(outputDir))
+		log.Println("running server at http://localhost:8081")
+		log.Fatal(http.ListenAndServe("localhost:8081", logRequest(fs)))
+	}
 }
