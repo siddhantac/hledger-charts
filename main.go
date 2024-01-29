@@ -44,7 +44,7 @@ func main() {
 		c := NewCharts(outputDir, year)
 		c.createYearlyReport()
 		c.createMonthlyReport("last month")
-		c.generateMonthlyReports("2023")
+		c.generateMonthlyReports(year)
 	}
 
 	fs := http.FileServer(http.Dir(outputDir))

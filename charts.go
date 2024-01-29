@@ -77,10 +77,10 @@ func (c Charts) createMonthlyReport(date string) {
 	log.Println("generated:", filename)
 }
 
-func (c Charts) generateMonthlyReports(year string) {
+func (c Charts) generateMonthlyReports(year int) {
 	workCh := make(chan string, 12)
 	for i := 1; i <= 12; i++ {
-		month := fmt.Sprintf("%s-%0.2d", year, i)
+		month := fmt.Sprintf("%d-%0.2d", year, i)
 		workCh <- month
 	}
 	close(workCh)
