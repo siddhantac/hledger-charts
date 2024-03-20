@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 
 	"github.com/go-echarts/go-echarts/v2/components"
 	"github.com/siddhantac/hledger"
@@ -81,7 +82,8 @@ func (c Charts) createMonthlyReport(date string) {
 func (c Charts) generateMonthlyReports(year int) {
 	var wg sync.WaitGroup
 	workCh := make(chan string, 12)
-	for i := 1; i <= 12; i++ {
+	currMonth := time.Now().Month()
+	for i := 1; i < int(currMonth); i++ {
 		month := fmt.Sprintf("%d-%0.2d", year, i)
 		workCh <- month
 	}
