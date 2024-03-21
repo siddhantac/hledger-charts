@@ -82,8 +82,13 @@ func (c Charts) createMonthlyReport(date string) {
 func (c Charts) generateMonthlyReports(year int) {
 	var wg sync.WaitGroup
 	workCh := make(chan string, 12)
-	currMonth := time.Now().Month()
-	for i := 1; i < int(currMonth); i++ {
+
+	endMonth := 12
+	now := time.Now()
+	if year == now.Year() {
+		endMonth = int(now.Month())
+	}
+	for i := 1; i < endMonth; i++ {
 		month := fmt.Sprintf("%d-%0.2d", year, i)
 		workCh <- month
 	}

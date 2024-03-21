@@ -45,7 +45,6 @@ func main() {
 	if generateReports {
 		c := NewCharts(outputDir, year)
 		c.createYearlyReport()
-		c.createMonthlyReport("last month")
 		c.generateMonthlyReports(year)
 	}
 
