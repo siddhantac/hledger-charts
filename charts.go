@@ -68,6 +68,7 @@ func (c Charts) createMonthlyReport(date string) {
 		c.expensesPieChart(date),
 		c.expensesHorizontalBarChart(date),
 		c.investmentsPieChart(date),
+		c.incomePieChart(date),
 	)
 
 	filename := fmt.Sprintf("%s/%s.html", c.OutputDir, date)
