@@ -1,2 +1,2 @@
 build:
-	go build -o bin/charts
+	go build -o bin/hledger-charts
