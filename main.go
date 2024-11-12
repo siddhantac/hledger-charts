@@ -28,13 +28,14 @@ func main() {
 	var (
 		generateReports bool
 		outputDir       string
-		year            int
+		year, month     int
 		server          bool
 	)
 
 	flag.BoolVar(&generateReports, "gen", false, "generate reports")
 	flag.StringVar(&outputDir, "out", "", "output directory")
 	flag.IntVar(&year, "year", time.Now().Year(), "year")
+	flag.IntVar(&month, "month", -1, "month. If not provided, reports for all months of the year will be generated")
 	flag.BoolVar(&server, "server", false, "start file server")
 	flag.Parse()
 
@@ -45,7 +46,13 @@ func main() {
 	if generateReports {
 		c := NewCharts(outputDir, year)
 		c.createYearlyReport()
-		c.generateMonthlyReports(year)
+
+		if month == -1 {
+			c.generateMonthlyReports(year)
+		} else {
+			t := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+			c.createMonthlyReport(t)
+		}
 	}
 
 	if server {
