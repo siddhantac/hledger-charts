@@ -64,7 +64,7 @@ func (c Charts) createYearlyReport() {
 func (c Charts) createMonthlyReport(t time.Time) {
 	date := fmt.Sprintf("%d-%0.2d", t.Year(), t.Month())
 	page := components.NewPage()
-	page.Layout = components.PageCenterLayout
+	page.Layout = components.PageFlexLayout
 	page.AddCharts(
 		c.expensesPieChart(date),
 		c.expensesHorizontalBarChart(date),
