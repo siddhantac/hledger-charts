@@ -53,6 +53,7 @@ func (c Charts) incomePieChart(date string) *charts.Pie {
 	hlopts := c.hlopts.
 		WithAccount("income").
 		WithAccountDrop(1).
+		WithAccountDepth(2).
 		WithStartDate(date).
 		WithInvertAmount(true)
 
