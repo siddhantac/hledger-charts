@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
 	"strconv"
@@ -94,10 +95,11 @@ func (c Charts) incomePieChart(date string) *charts.Pie {
 	return pie
 }
 
-func (c Charts) incomeStatementBarChartMonthly(date string) *charts.Bar {
+func (c Charts) incomeStatementBarChartMonthly(year int) *charts.Bar {
 	hlopts := c.hlopts.
 		WithAccountDepth(1).
-		WithStartDate(date).
+		WithStartDate(fmt.Sprintf("%d", year)).
+		WithEndDate(fmt.Sprintf("%d", year+1)).
 		WithPeriod(hledger.PeriodMonthly)
 
 	rd, err := c.hl.IncomeStatement(hlopts)
@@ -115,7 +117,7 @@ func (c Charts) incomeStatementBarChartMonthly(date string) *charts.Bar {
 	bar := charts.NewBar()
 	bar.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
-			Title: "Monthly Income & Expense " + date,
+			Title: fmt.Sprintf("Monthly Income & Expense %d", year),
 		}),
 		charts.WithInitializationOpts(defaultTheme()),
 		charts.WithLegendOpts(opts.Legend{Show: true}),

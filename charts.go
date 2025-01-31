@@ -43,14 +43,14 @@ func (c Charts) createYearlyReport() {
 	page := components.NewPage()
 	page.Layout = components.PageCenterLayout
 	page.AddCharts(
-		c.incomeStatementBarChartMonthly(date),
+		c.incomeStatementBarChartMonthly(c.Year),
 		c.expensesPieChart(date),
 		c.expensesHorizontalBarChart(date),
 		c.investmentsPieChart(date),
 		c.incomePieChart(date),
 		c.incomeFromInvestmentsPieChart(date),
 	)
-	page.PageTitle = "Yearly Report 2023"
+	page.PageTitle = fmt.Sprintf("Yearly Report %d", c.Year)
 
 	filename := fmt.Sprintf("%s/%s.html", c.OutputDir, date)
 	f, err := os.Create(filename)
