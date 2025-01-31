@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
-	"github.com/go-echarts/go-echarts/v2/types"
 	"github.com/siddhantac/hledger"
 )
 
@@ -19,7 +18,7 @@ func (c Charts) incomeFromInvestmentsPieChart(date string) *charts.Pie {
 		WithAccount("income:investment").
 		WithAccountDrop(1).
 		WithStartDate(date).
-		WithInvertAmount()
+		WithInvertAmount(true)
 
 	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
@@ -30,21 +29,17 @@ func (c Charts) incomeFromInvestmentsPieChart(date string) *charts.Pie {
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
-			Title: "Income from investments  " + date,
+			Title: "Income from investments",
 		}),
-		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
-		charts.WithInitializationOpts(
-			opts.Initialization{
-				Theme:           types.ThemeRoma,
-				BackgroundColor: "white",
-			}),
-		charts.WithLegendOpts(opts.Legend{Show: false}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
+		charts.WithInitializationOpts(defaultTheme()),
+		charts.WithLegendOpts(opts.Legend{Show: opts.Bool(false)}),
 	)
 
 	pie.AddSeries("pie", parseCSV1a(data)).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
-				Show:      true,
+				Show:      opts.Bool(true),
 				Formatter: "{b}: {c}",
 			}),
 			charts.WithPieChartOpts(opts.PieChart{
@@ -59,7 +54,7 @@ func (c Charts) incomePieChart(date string) *charts.Pie {
 		WithAccount("income").
 		WithAccountDrop(1).
 		WithStartDate(date).
-		WithInvertAmount()
+		WithInvertAmount(true)
 
 	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
@@ -71,21 +66,17 @@ func (c Charts) incomePieChart(date string) *charts.Pie {
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
-			Title: "Income  " + date,
+			Title: "Income distribution",
 		}),
-		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
-		charts.WithInitializationOpts(
-			opts.Initialization{
-				Theme:           types.ThemeRoma,
-				BackgroundColor: "white",
-			}),
-		charts.WithLegendOpts(opts.Legend{Show: false}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
+		charts.WithInitializationOpts(defaultTheme()),
+		charts.WithLegendOpts(opts.Legend{Show: opts.Bool(false)}),
 	)
 
 	pie.AddSeries("pie", parseCSV1a(data)).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
-				Show:      true,
+				Show:      opts.Bool(true),
 				Formatter: "{b}: {c}",
 			}),
 			charts.WithPieChartOpts(opts.PieChart{
@@ -117,18 +108,18 @@ func (c Charts) incomeStatementBarChartMonthly(year int) *charts.Bar {
 	bar := charts.NewBar()
 	bar.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
-			Title: fmt.Sprintf("Monthly Income & Expense %d", year),
+			Title: "Monthly Income & Expense",
 		}),
 		charts.WithInitializationOpts(defaultTheme()),
-		charts.WithLegendOpts(opts.Legend{Show: true}),
-		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
+		charts.WithLegendOpts(opts.Legend{Show: opts.Bool(true)}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
 	)
 	bar.SetXAxis(xdata).
-		AddSeries("income", ydata[0]).
 		AddSeries("expense", ydata[1]).
+		AddSeries("income", ydata[0]).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
-				Show:     true,
+				Show:     opts.Bool(true),
 				Position: "top",
 			}),
 		)

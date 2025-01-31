@@ -27,7 +27,7 @@ func NewCharts(outputDir string, year int) Charts {
 
 	hlopts := hledger.NewOptions().
 		WithLayout(hledger.LayoutBare).
-		WithOutputCSV()
+		WithOutputCSV(true)
 
 	return Charts{
 		OutputDir: dir,
@@ -41,16 +41,16 @@ func (c Charts) createYearlyReport() {
 	date := fmt.Sprintf("%d", c.Year)
 
 	page := components.NewPage()
-	page.Layout = components.PageCenterLayout
+	page.Layout = components.PageFlexLayout
 	page.AddCharts(
 		c.incomeStatementBarChartMonthly(c.Year),
-		c.expensesPieChart(date),
 		c.expensesHorizontalBarChart(date),
-		c.investmentsPieChart(date),
+		c.expensesPieChart(date),
 		c.incomePieChart(date),
+		c.investmentsPieChart(date),
 		c.incomeFromInvestmentsPieChart(date),
 	)
-	page.PageTitle = fmt.Sprintf("Yearly Report %d", c.Year)
+	page.PageTitle = fmt.Sprintf("%d Yearly Report", c.Year)
 
 	filename := fmt.Sprintf("%s/%s.html", c.OutputDir, date)
 	f, err := os.Create(filename)

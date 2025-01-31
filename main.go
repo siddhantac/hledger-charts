@@ -12,8 +12,8 @@ import (
 
 func defaultTheme() opts.Initialization {
 	return opts.Initialization{
-		Theme:           types.ThemeRoma,
-		BackgroundColor: "white",
+		Theme: types.ThemeVintage,
+		// BackgroundColor: "white",
 	}
 }
 

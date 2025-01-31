@@ -32,7 +32,7 @@ func subExpenses(subcategory string) *charts.Bar {
 		AddSeries(subcategory, ydata).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
-				Show:     true,
+				Show:     opts.Bool(true),
 				Position: "top",
 			}),
 		)
@@ -51,7 +51,7 @@ func subExpenses2(subcategory string) *charts.Line {
 			Title:    "Expenses 2023",
 			Subtitle: "Dine out",
 		}),
-		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
 		charts.WithInitializationOpts(defaultTheme()),
 	)
 
@@ -61,10 +61,10 @@ func subExpenses2(subcategory string) *charts.Line {
 		AddSeries(subcategory, ydata).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
-				Show: true,
+				Show: opts.Bool(true),
 			}),
 			charts.WithLineChartOpts(opts.LineChart{
-				ShowSymbol: true,
+				ShowSymbol: opts.Bool(true),
 			}),
 		)
 	return line

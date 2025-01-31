@@ -6,13 +6,13 @@ import (
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
-	"github.com/go-echarts/go-echarts/v2/types"
 )
 
 func (c Charts) investmentsPieChart(date string) *charts.Pie {
 	hlopts := c.hlopts.
 		WithAccount("assets:invest").
 		WithAccountDrop(2).
+		WithAccountDepth(3).
 		WithStartDate(date)
 
 	rd, err := c.hl.Balance(hlopts)
@@ -25,21 +25,17 @@ func (c Charts) investmentsPieChart(date string) *charts.Pie {
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
-			Title: "Investments  " + date,
+			Title: "Investments",
 		}),
-		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
-		charts.WithInitializationOpts(
-			opts.Initialization{
-				Theme:           types.ThemeRoma,
-				BackgroundColor: "white",
-			}),
-		charts.WithLegendOpts(opts.Legend{Show: false}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
+		charts.WithInitializationOpts(defaultTheme()),
+		charts.WithLegendOpts(opts.Legend{Show: opts.Bool(false)}),
 	)
 
 	pie.AddSeries("pie", parseCSV1a(data)).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
-				Show:      true,
+				Show:      opts.Bool(true),
 				Formatter: "{b}: {c}",
 			}),
 			charts.WithPieChartOpts(opts.PieChart{

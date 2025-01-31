@@ -6,7 +6,6 @@ import (
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
-	"github.com/go-echarts/go-echarts/v2/types"
 )
 
 func (c Charts) expensesPieChart(date string) *charts.Pie {
@@ -27,21 +26,17 @@ func (c Charts) expensesPieChart(date string) *charts.Pie {
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
-			Title: "Expenses pie chart " + date,
+			Title: "Expense distribution",
 		}),
-		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
-		charts.WithInitializationOpts(
-			opts.Initialization{
-				Theme:           types.ThemeRoma,
-				BackgroundColor: "white",
-			}),
-		charts.WithLegendOpts(opts.Legend{Show: false}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
+		charts.WithInitializationOpts(defaultTheme()),
+		charts.WithLegendOpts(opts.Legend{Show: opts.Bool(false)}),
 	)
 
 	pie.AddSeries("pie", parseCSV1a(data)).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
-				Show:      true,
+				Show:      opts.Bool(true),
 				Formatter: "{b}: {c}",
 			}),
 			charts.WithPieChartOpts(opts.PieChart{
@@ -56,12 +51,11 @@ func (c Charts) expensesHorizontalBarChart(date string) *charts.Bar {
 		WithAccount("expenses").
 		WithAccountDrop(1).
 		WithAccountDepth(2).
-		WithSortAmount().
+		WithSortAmount(true).
 		WithStartDate(date)
 		// TODO: add -S
 
 	rd, err := c.hl.Balance(hlopts)
-	// out, err := exec.Command("hledger", "bal", "expenses", "--depth", "2", "-S", "-p", date, "-O", "csv").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -70,11 +64,11 @@ func (c Charts) expensesHorizontalBarChart(date string) *charts.Bar {
 	bar := charts.NewBar()
 	bar.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
-			Title: "Expenses Top list " + date,
+			Title: "Expenses Top List",
 		}),
 		charts.WithInitializationOpts(defaultTheme()),
-		charts.WithLegendOpts(opts.Legend{Show: false}),
-		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
+		charts.WithLegendOpts(opts.Legend{Show: opts.Bool(false)}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
 	)
 
 	xdata, ydata := parseCSV1(data)
@@ -85,7 +79,7 @@ func (c Charts) expensesHorizontalBarChart(date string) *charts.Bar {
 		AddSeries("expenses", ydata).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
-				Show:     true,
+				Show:     opts.Bool(true),
 				Position: "right",
 			}),
 		)
