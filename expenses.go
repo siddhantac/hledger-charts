@@ -28,16 +28,22 @@ func (c Charts) expensesPieChart(date string) *charts.Pie {
 		charts.WithTitleOpts(opts.Title{
 			Title: "Expense distribution",
 		}),
-		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
 		charts.WithInitializationOpts(defaultTheme()),
 		charts.WithLegendOpts(opts.Legend{Show: opts.Bool(false)}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
+		// alternative option
+		// charts.WithTooltipOpts(opts.Tooltip{
+		// 	Show:      opts.Bool(true),
+		// 	Trigger:   "item",
+		// 	Formatter: "{b}: ${c} ({d}%)",
+		// }),
 	)
 
 	pie.AddSeries("pie", parseCSV1a(data)).
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
 				Show:      opts.Bool(true),
-				Formatter: "{b}: {c}",
+				Formatter: "{b}: {d}%",
 			}),
 			charts.WithPieChartOpts(opts.PieChart{
 				Radius: []string{"40%", "75%"},

@@ -2,7 +2,7 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/go-echarts/go-echarts/v2 v2.5.0 h1:P/JGanoIrpOOC4K9sRFeKSIUTIpPQwGHQJ/ELWre19Y=
 github.com/go-echarts/go-echarts/v2 v2.5.0/go.mod h1:56YlvzhW/a+du15f3S2qUGNDfKnFOeJSThBIrVFHDtI=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
-github.com/siddhantac/hledger v0.9.3 h1:/rUpfOmE9ckDPn5SqnDL/+zMXsDay5I2yALiWnSI6Vc=
-github.com/siddhantac/hledger v0.9.3/go.mod h1:87p4LqIKToEa5YxjVLnJZr/AUZp/Q+ScGSS3Dvx9zAg=
+github.com/siddhantac/hledger v0.10.0 h1:wba2ZlUH0mSsWCkMrpXie2FbDaTcCfmD32WQ7LAZ1Fc=
+github.com/siddhantac/hledger v0.10.0/go.mod h1:87p4LqIKToEa5YxjVLnJZr/AUZp/Q+ScGSS3Dvx9zAg=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
