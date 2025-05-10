@@ -11,7 +11,7 @@ import (
 func (c Charts) investmentsPieChart(date string) *charts.Pie {
 	hlopts := c.hlopts.
 		WithAccount("assets:invest").
-		WithAccountDrop(2).
+		WithAccountDrop(1).
 		WithAccountDepth(3).
 		WithStartDate(date)
 
