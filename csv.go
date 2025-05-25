@@ -20,8 +20,12 @@ func parseCSV1a(data string) []opts.PieData {
 
 	var pieData []opts.PieData
 
-	for _, record := range records[1 : len(records)-1] {
+	for _, record := range records[1:] {
 		name := record[0]
+		if name == "" {
+			continue
+		}
+
 		num := record[2]
 		amt, err := strconv.ParseFloat(num, 64)
 		if err != nil {
