@@ -10,8 +10,8 @@ import (
 
 func (c Charts) investmentsPieChart(date, endDate string) *charts.Pie {
 	hlopts := c.hlopts.
-		WithAccount("assets:invest").
-		WithAccountDrop(1).
+		WithAccount("assets:investment").
+		WithAccountDrop(2).
 		WithAccountDepth(3).
 		WithStartDate(date).
 		WithEndDate(endDate)
