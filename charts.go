@@ -39,16 +39,17 @@ func NewCharts(outputDir string, year int) Charts {
 
 func (c Charts) createYearlyReport() {
 	date := fmt.Sprintf("%d", c.Year)
+	endDate := fmt.Sprintf("%d", c.Year+1)
 
 	page := components.NewPage()
 	page.Layout = components.PageFlexLayout
 	page.AddCharts(
 		c.incomeStatementBarChartMonthly(c.Year),
-		c.expensesHorizontalBarChart(date),
-		c.expensesPieChart(date),
-		c.incomePieChart(date),
-		c.investmentsPieChart(date),
-		c.incomeFromInvestmentsPieChart(date),
+		c.expensesHorizontalBarChart(date, endDate),
+		c.expensesPieChart(date, endDate),
+		c.incomePieChart(date, endDate),
+		c.investmentsPieChart(date, endDate),
+		c.incomeFromInvestmentsPieChart(date, endDate),
 	)
 	page.PageTitle = fmt.Sprintf("%d Yearly Report", c.Year)
 
@@ -63,13 +64,14 @@ func (c Charts) createYearlyReport() {
 
 func (c Charts) createMonthlyReport(t time.Time) {
 	date := fmt.Sprintf("%d-%0.2d", t.Year(), t.Month())
+	endDate := fmt.Sprintf("%d-%0.2d", t.Year(), t.Month()+1)
 	page := components.NewPage()
 	page.Layout = components.PageFlexLayout
 	page.AddCharts(
-		c.expensesPieChart(date),
-		c.expensesHorizontalBarChart(date),
-		c.investmentsPieChart(date),
-		c.incomePieChart(date),
+		c.expensesPieChart(date, endDate),
+		c.expensesHorizontalBarChart(date, endDate),
+		c.investmentsPieChart(date, endDate),
+		c.incomePieChart(date, endDate),
 	)
 
 	filename := fmt.Sprintf("%s/%s.html", c.OutputDir, date)

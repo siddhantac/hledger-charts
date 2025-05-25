@@ -13,11 +13,12 @@ import (
 	"github.com/siddhantac/hledger"
 )
 
-func (c Charts) incomeFromInvestmentsPieChart(date string) *charts.Pie {
+func (c Charts) incomeFromInvestmentsPieChart(date, endDate string) *charts.Pie {
 	hlopts := c.hlopts.
 		WithAccount("income:investment").
 		WithAccountDrop(1).
 		WithStartDate(date).
+		WithEndDate(endDate).
 		WithInvertAmount(true)
 
 	rd, err := c.hl.Balance(hlopts)
@@ -49,12 +50,13 @@ func (c Charts) incomeFromInvestmentsPieChart(date string) *charts.Pie {
 	return pie
 }
 
-func (c Charts) incomePieChart(date string) *charts.Pie {
+func (c Charts) incomePieChart(date, endDate string) *charts.Pie {
 	hlopts := c.hlopts.
 		WithAccount("income").
 		WithAccountDrop(1).
 		WithAccountDepth(2).
 		WithStartDate(date).
+		WithEndDate(endDate).
 		WithInvertAmount(true)
 
 	rd, err := c.hl.Balance(hlopts)

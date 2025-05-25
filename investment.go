@@ -8,12 +8,13 @@ import (
 	"github.com/go-echarts/go-echarts/v2/opts"
 )
 
-func (c Charts) investmentsPieChart(date string) *charts.Pie {
+func (c Charts) investmentsPieChart(date, endDate string) *charts.Pie {
 	hlopts := c.hlopts.
 		WithAccount("assets:invest").
 		WithAccountDrop(1).
 		WithAccountDepth(3).
-		WithStartDate(date)
+		WithStartDate(date).
+		WithEndDate(endDate)
 
 	rd, err := c.hl.Balance(hlopts)
 	if err != nil {

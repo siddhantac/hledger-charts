@@ -8,12 +8,13 @@ import (
 	"github.com/go-echarts/go-echarts/v2/opts"
 )
 
-func (c Charts) expensesPieChart(date string) *charts.Pie {
+func (c Charts) expensesPieChart(startDate, endDate string) *charts.Pie {
 	hlopts := c.hlopts.
 		WithAccount("expenses").
 		WithAccountDrop(1).
 		WithAccountDepth(2).
-		WithStartDate(date)
+		WithStartDate(startDate).
+		WithEndDate(endDate)
 
 	rd, err := c.hl.Balance(hlopts)
 	if err != nil {
@@ -52,13 +53,14 @@ func (c Charts) expensesPieChart(date string) *charts.Pie {
 	return pie
 }
 
-func (c Charts) expensesHorizontalBarChart(date string) *charts.Bar {
+func (c Charts) expensesHorizontalBarChart(startDate, endDate string) *charts.Bar {
 	hlopts := c.hlopts.
 		WithAccount("expenses").
 		WithAccountDrop(1).
 		WithAccountDepth(2).
 		WithSortAmount(true).
-		WithStartDate(date)
+		WithStartDate(startDate).
+		WithEndDate(endDate)
 		// TODO: add -S
 
 	rd, err := c.hl.Balance(hlopts)
