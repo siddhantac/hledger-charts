@@ -64,3 +64,41 @@ func parseCSV1(data string) ([]string, []opts.BarData) {
 
 	return xdata, ydata
 }
+
+func parseBudgetData(data string) ([]string, []opts.BarData) {
+	r := csv.NewReader(strings.NewReader(data))
+
+	records, err := r.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var xdata []string
+	var ydata []opts.BarData
+
+	for _, record := range records[1 : len(records)-1] {
+		xdata = append(xdata, record[0])
+		value := getAmount(record[2])
+		budget := getAmount(record[3])
+
+		var consumedBudget int
+		if budget == 0 {
+			consumedBudget = 0
+		} else {
+			consumedBudget = int((value / budget) * 100)
+		}
+		ydata = append(ydata, opts.BarData{Value: consumedBudget})
+	}
+
+	return xdata, ydata
+}
+
+func getAmount(num string) float64 {
+	num = strings.Replace(num, ",", "", 1)
+	amt, err := strconv.ParseFloat(num, 64)
+	if err != nil {
+		amt = 0
+		log.Println(err)
+	}
+	return amt
+}

@@ -50,6 +50,7 @@ func (c Charts) createYearlyReport() {
 		c.incomePieChart(date, endDate),
 		c.investmentsPieChart(date, endDate),
 		c.incomeFromInvestmentsPieChart(date, endDate),
+		c.budgetBarChart(date, endDate),
 	)
 	page.PageTitle = fmt.Sprintf("%d Yearly Report", c.Year)
 
