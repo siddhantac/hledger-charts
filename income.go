@@ -41,7 +41,7 @@ func (c Charts) incomeFromInvestmentsPieChart(date, endDate string) *charts.Pie 
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
 				Show:      opts.Bool(true),
-				Formatter: "{b}: {c}",
+				Formatter: "{b}: {d}% (${c})",
 			}),
 			charts.WithPieChartOpts(opts.PieChart{
 				Radius: []string{"40%", "75%"},
@@ -80,7 +80,7 @@ func (c Charts) incomePieChart(date, endDate string) *charts.Pie {
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
 				Show:      opts.Bool(true),
-				Formatter: "{b}: {c}",
+				Formatter: "{b}: {d}% (${c})",
 			}),
 			charts.WithPieChartOpts(opts.PieChart{
 				Radius: []string{"40%", "75%"},

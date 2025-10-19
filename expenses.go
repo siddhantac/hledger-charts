@@ -44,7 +44,7 @@ func (c Charts) expensesPieChart(startDate, endDate string) *charts.Pie {
 		SetSeriesOptions(
 			charts.WithLabelOpts(opts.Label{
 				Show:      opts.Bool(true),
-				Formatter: "{b}: {d}%",
+				Formatter: "{b}: {d}% (${c})",
 			}),
 			charts.WithPieChartOpts(opts.PieChart{
 				Radius: []string{"40%", "75%"},
