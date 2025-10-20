@@ -14,7 +14,8 @@ func (c Charts) investmentsPieChart(date, endDate string) *charts.Pie {
 		WithAccountDrop(2).
 		WithAccountDepth(3).
 		WithStartDate(date).
-		WithEndDate(endDate)
+		WithEndDate(endDate).
+		WithValuation(true)
 
 	rd, err := c.hl.Balance(hlopts)
 	if err != nil {

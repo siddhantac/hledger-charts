@@ -16,7 +16,7 @@ import (
 func (c Charts) incomeFromInvestmentsPieChart(date, endDate string) *charts.Pie {
 	hlopts := c.hlopts.
 		WithAccount("income:investment").
-		WithAccountDrop(1).
+		WithAccountDrop(2).
 		WithStartDate(date).
 		WithEndDate(endDate).
 		WithInvertAmount(true)
@@ -30,7 +30,7 @@ func (c Charts) incomeFromInvestmentsPieChart(date, endDate string) *charts.Pie 
 	pie := charts.NewPie()
 	pie.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
-			Title: "Income from investments",
+			Title: "Realised income from investments",
 		}),
 		charts.WithTooltipOpts(opts.Tooltip{Show: opts.Bool(true)}),
 		charts.WithInitializationOpts(defaultTheme()),
