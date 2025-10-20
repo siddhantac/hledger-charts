@@ -45,6 +45,7 @@ func main() {
 
 	if generateReports {
 		c := NewCharts(outputDir, year)
+		c.createYoYReport()
 		c.createYearlyReport()
 
 		if month == -1 {

@@ -37,6 +37,25 @@ func NewCharts(outputDir string, year int) Charts {
 	}
 }
 
+func (c Charts) createYoYReport() {
+	date := "2020"
+	endDate := fmt.Sprintf("%d", c.Year+1)
+	page := components.NewPage()
+	page.Layout = components.PageFlexLayout
+	page.AddCharts(
+		c.yoyChart(date, endDate),
+	)
+	page.PageTitle = "Overview"
+
+	filename := fmt.Sprintf("%s/yoy.html", filepath.Dir(c.OutputDir))
+	f, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	page.Render(f)
+	log.Println("generated:", filename)
+}
+
 func (c Charts) createYearlyReport() {
 	date := fmt.Sprintf("%d", c.Year)
 	endDate := fmt.Sprintf("%d", c.Year+1)
